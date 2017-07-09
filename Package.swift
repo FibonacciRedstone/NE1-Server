@@ -1,5 +1,6 @@
 //
 //  Package.swift
+//  Based on :
 //  Perfect JSON API Example
 //
 //  Created by Jonathan Guthrie on 2016-09-26.
@@ -21,9 +22,13 @@ import PackageDescription
 
 // Note that the following Swift Package Manager dependancy inclusion will also import other required modules.
 let package = Package(
-    name: "Perfect-JSON-API",
+    name: "Perfect-NE1-Server",
     targets: [],
     dependencies: [
-		.Package(url: "https://github.com/PerfectlySoft/Perfect-HTTPServer.git", majorVersion: 2, minor: 0)
+        .Package(url: "https://github.com/PerfectlySoft/Perfect-Crypto.git", majorVersion: 1),
+        .Package(url: "https://github.com/PerfectlySoft/Perfect-Session-MySQL.git", majorVersion: 1),
+		.Package(url: "https://github.com/PerfectlySoft/Perfect-HTTPServer.git", majorVersion: 2),
+		.Package(url: "https://github.com/PerfectlySoft/Perfect-MySQL.git", majorVersion: 2),
+		.Package(url: "https://github.com/PerfectlySoft/Perfect-LocalAuthentication-MySQL.git", majorVersion: 1),
 	]
 )

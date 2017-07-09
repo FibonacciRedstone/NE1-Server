@@ -20,13 +20,36 @@
 import PerfectLib
 import PerfectHTTP
 import PerfectHTTPServer
+import PerfectSession
+import PerfectSessionMySQL
 
 // Create HTTP server.
 let server = HTTPServer()
 
+
+SessionConfig.name = "NE1SessionConfig"
+SessionConfig.idle = 60
+
+// Optional
+SessionConfig.cookieDomain = "ne1"
+
+//MySQLSessionConnector.host = "localhost"
+//MySQLSessionConnector.port = 3306
+//MySQLSessionConnector.username = "s3"
+//MySQLSessionConnector.password = "password"
+//MySQLSessionConnector.database = "ne1_data"
+//MySQLSessionConnector.table = "sessions"
+
+let sessionDriver = SessionMemoryDriver()
+
+server.setRequestFilters([sessionDriver.requestFilter])
+server.setResponseFilters([sessionDriver.responseFilter])
+//server.setRequestFilters([sessionDriver.requestFilter])
+//server.setResponseFilters([sessionDriver.responseFilter])
+
 // Create the container variable for routes to be added to.
 var routes = Routes()
-
+server.documentRoot = "./webroot"
 // Register your own routes and handlers
 // This is an example "Hello, world!" HTML route
 routes.add(method: .get, uri: "/", handler: {
@@ -39,7 +62,6 @@ routes.add(method: .get, uri: "/", handler: {
 	response.completed()
 	}
 )
-
 
 // Adding a route to handle the GET people list URL
 routes.add(method: .get, uri: "/api/v1/people", handler: {
@@ -85,7 +107,13 @@ routes.add(method: .post, uri: "/api/v1/people/json", handler: {
 	response.completed()
 	}
 )
+//This route will be used to fetch data from the mysql database
+routes.add(method: .get, uri: "/api/v1/users", handler: userList)
 
+routes.add(method: .post, uri: "/api/v1/user/login", handler: userLogin)
+routes.add(method: .post, uri: "/api/v1/user/favorites", handler: userFavorites)
+routes.add(method: .post, uri: "/api/v1/user/suggestions", handler: userSuggestions)
+routes.add(method: .post, uri: "/api/v1/user/showtime", handler: userShowtime)
 
 
 // Add the routes to the server.
